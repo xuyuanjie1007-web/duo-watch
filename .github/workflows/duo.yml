@@ -1,0 +1,16 @@
+name: duo-watch
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Apple stock
+        env:
+          BARK_KEY: ${{ secrets.BARK_KEY }}
+          FIRST_RUN: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
+        run: python3 check.py
